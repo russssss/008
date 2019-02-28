@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">t-008</string>
+    <string name="error_data_loading" >Ошибка загрузки данных</string>
+</resources>
