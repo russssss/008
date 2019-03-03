@@ -1,7 +1,6 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 

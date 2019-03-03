@@ -1,10 +1,9 @@
-package com.example.t_008.feature_storage;
+package com.example.t_008.storage;
 
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 class DBHelper extends SQLiteOpenHelper {
 

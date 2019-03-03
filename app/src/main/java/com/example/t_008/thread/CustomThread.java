@@ -1,4 +1,4 @@
-package com.example.t_008.feature_thread;
+package com.example.t_008.thread;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -10,7 +10,7 @@ public class CustomThread<T extends CustomObserver> {
     private Object o;
     private T observable;
 
-    public void subscribe(final T observableT) {
+    public void subscribe(T observableT) {
         this.observable = observableT;
 
         handler = new Handler(Looper.getMainLooper());
@@ -18,15 +18,11 @@ public class CustomThread<T extends CustomObserver> {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                super.run();
                 Looper.prepare();
-
                 o = observable.doOnThread();
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         if (observable != null) {
                             observable.callOnSuccess(o);
                         }
@@ -40,6 +36,6 @@ public class CustomThread<T extends CustomObserver> {
     }
 
     public void unsubscribe() {
-        observable = null;
+            observable = null;
     }
 }

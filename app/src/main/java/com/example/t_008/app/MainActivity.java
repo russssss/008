@@ -1,4 +1,4 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.t_008.R;
-import com.example.t_008.feature_app.currency_view.CurrencyView;
-import com.example.t_008.feature_app.currency_view.CurrencyViewModel;
+import com.example.t_008.app.currency_view.CurrencyView;
+import com.example.t_008.app.currency_view.CurrencyViewModel;
 
 import java.util.List;
 
@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyViewListe
     private CurrencyView currencyViewFrom;
     private CurrencyView currencyViewTo;
     private PresenterCurrency presenterCurrency;
+    private String VIEW_PAGER_POS_FROM = "POS_FROM";
+    private String VIEW_PAGER_POS_TO = "POS_TO";
 
     ///////////////////////////////////////////////////////////////////////////
     // Activity
@@ -48,6 +50,24 @@ public class MainActivity extends AppCompatActivity implements CurrencyViewListe
         presenterCurrency.stop();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(VIEW_PAGER_POS_FROM) &&
+                savedInstanceState.containsKey(VIEW_PAGER_POS_TO)) {
+            currencyViewFrom.setPosition(savedInstanceState.getInt(VIEW_PAGER_POS_FROM));
+            currencyViewTo.setPosition(savedInstanceState.getInt(VIEW_PAGER_POS_TO));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(VIEW_PAGER_POS_FROM, currencyViewFrom.getCurrentPosition());
+        outState.putInt(VIEW_PAGER_POS_TO, currencyViewTo.getCurrentPosition());
+        super.onSaveInstanceState(outState);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////////////////////
@@ -60,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyViewListe
     }
 
     private void init() {
+
         presenterCurrency = new PresenterCurrency(this, this);
 
         currencySumFrom.addTextChangedListener(new TextWatcher() {

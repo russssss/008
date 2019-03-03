@@ -1,11 +1,12 @@
-package com.example.t_008.feature_storage;
+package com.example.t_008.storage;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.example.t_008.feature_app.IContext;
+import com.example.t_008.app.IContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,7 @@ public class Storage {
     private DBHelper dbHelper;
 
     public Storage(IContext iContext) {
-        if (iContext instanceof Context) {
             dbHelper = new DBHelper(iContext.getContext());
-        }
     }
 
     public void saveData(List<CurrencyDbModel> currencyDbModelList) {
@@ -45,6 +44,7 @@ public class Storage {
     }
 
     public List<CurrencyDbModel> readData() {
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query(ConstDB.DB_NAME, null, null, null, null, null, null);
 

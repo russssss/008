@@ -1,4 +1,4 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;

@@ -1,4 +1,4 @@
-package com.example.t_008.feature_thread;
+package com.example.t_008.thread;
 
 public interface CustomObserver<E extends Object> {
 

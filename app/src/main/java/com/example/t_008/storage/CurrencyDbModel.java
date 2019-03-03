@@ -1,4 +1,4 @@
-package com.example.t_008.feature_storage;
+package com.example.t_008.storage;
 
 public class CurrencyDbModel {
     private int numCode;
@@ -34,7 +34,6 @@ public class CurrencyDbModel {
     public String getValue() {
         return value;
     }
-
 
     public static final class Builder {
         private int numCode;

@@ -1,19 +1,15 @@
 package com.example.t_008;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.example.t_008.feature_app.IContext;
-import com.example.t_008.feature_app.InteractorCurrency;
-import com.example.t_008.feature_app.InteractorCurrencyListener;
-import com.example.t_008.feature_app.MainActivity;
-import com.example.t_008.feature_app.currency_view.CurrencyViewModel;
-import com.example.t_008.feature_thread.CustomThread;
+import com.example.t_008.app.IContext;
+import com.example.t_008.app.InteractorCurrency;
+import com.example.t_008.app.InteractorCurrencyListener;
+import com.example.t_008.app.MainActivity;
+import com.example.t_008.app.currency_view.CurrencyViewModel;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,6 +33,7 @@ public class InteractorCurrencyTest {
 
     InteractorCurrencyListener interactorCurrencyListener;
     IContext iContext;
+    InteractorCurrency interactorCurrency;
 
     @Before
     public void init() {
@@ -59,12 +56,8 @@ public class InteractorCurrencyTest {
                 return mActivityRule.getActivity();
             }
         };
-    }
 
-    @Test
-    public void useAppContext() {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        assertEquals("com.example.t_008", appContext.getPackageName());
+        interactorCurrency = new InteractorCurrency(interactorCurrencyListener, iContext);
     }
 
     @Test
@@ -72,16 +65,9 @@ public class InteractorCurrencyTest {
         assertNotNull(interactorCurrencyListener);
         assertNotNull(iContext);
         assertEquals(iContext.getContext(), mActivityRule.getActivity().getContext());
-
-        InteractorCurrency interactorCurrency = new InteractorCurrency(interactorCurrencyListener, iContext);
         assertNotNull(interactorCurrency);
+        interactorCurrency.requestStop();
         interactorCurrency.requestData();
-
-    }
-
-    @After
-    public void interactorTestAfter() {
-        InteractorCurrency interactorCurrency = new InteractorCurrency(interactorCurrencyListener, iContext);
-        interactorCurrency.restStop();
+        assertNotNull(iContext);
     }
 }

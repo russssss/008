@@ -1,6 +1,6 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
-import com.example.t_008.feature_app.currency_view.CurrencyViewModel;
+import com.example.t_008.app.currency_view.CurrencyViewModel;
 
 import java.util.List;
 

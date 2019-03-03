@@ -1,8 +1,8 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
-import com.example.t_008.feature_thread.CustomObserver;
-import com.example.t_008.feature_thread.CustomThread;
-import com.example.t_008.feature_app.currency_view.CurrencyViewModel;
+import com.example.t_008.thread.CustomObserver;
+import com.example.t_008.thread.CustomThread;
+import com.example.t_008.app.currency_view.CurrencyViewModel;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,18 +14,24 @@ public class PresenterCurrency implements InteractorCurrencyListener{
     private InteractorCurrency interactorCurrency;
     private PresenterCurrencyListener presenterCurrencyListener;
     private List<CurrencyViewModel> currencyViewModelList;
+    private CustomThread calculateBottomElementsThread;
 
     public PresenterCurrency(PresenterCurrencyListener presenterCurrencyListener, IContext iContext) {
         this.presenterCurrencyListener = presenterCurrencyListener;
         interactorCurrency = new InteractorCurrency(this, iContext);
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Methods
+    ///////////////////////////////////////////////////////////////////////////
+
     public void start() {
         interactorCurrency.requestData();
     }
 
     public void stop() {
-        interactorCurrency.restStop();
+        interactorCurrency.requestStop();
+        calculateBottomElementsThread.unsubscribe();
     }
 
     public void productSelectedFrom(final CurrencyViewModel currencyViewModel) {
@@ -33,9 +39,8 @@ public class PresenterCurrency implements InteractorCurrencyListener{
         if (currencyViewModelList == null)
             return;
 
-
-        final CustomThread myCustomThread = new CustomThread();
-        myCustomThread.subscribe(new CustomObserver<List<CurrencyViewModel>>() {
+        calculateBottomElementsThread = new CustomThread();
+        calculateBottomElementsThread.subscribe(new CustomObserver<List<CurrencyViewModel>>() {
             @Override
             public void callOnSuccess(List<CurrencyViewModel> o) {
                 presenterCurrencyListener.onChangedTo(o);
@@ -61,8 +66,8 @@ public class PresenterCurrency implements InteractorCurrencyListener{
         presenterCurrencyListener.calculateCurrency();
     }
 
-    public void calculateCurrency(CurrencyViewModel currencyFrom, CurrencyViewModel currencyTo, String s) {
-        double val = s.trim().length() == 0 ? 0 : Double.valueOf(s);
+    public void calculateCurrency(CurrencyViewModel currencyFrom, CurrencyViewModel currencyTo, String data) {
+        double val = data.trim().length() == 0 ? 0 : Double.valueOf(data);
 
         if (currencyFrom == null || currencyTo == null)
             return;

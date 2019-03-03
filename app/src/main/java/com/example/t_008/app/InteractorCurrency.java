@@ -1,12 +1,12 @@
-package com.example.t_008.feature_app;
+package com.example.t_008.app;
 
 import android.content.Context;
 
-import com.example.t_008.feature_thread.CustomThread;
-import com.example.t_008.feature_thread.CustomObserver;
-import com.example.t_008.feature_app.currency_view.CurrencyViewModel;
-import com.example.t_008.feature_storage.CurrencyDbModel;
-import com.example.t_008.feature_storage.Storage;
+import com.example.t_008.thread.CustomThread;
+import com.example.t_008.thread.CustomObserver;
+import com.example.t_008.app.currency_view.CurrencyViewModel;
+import com.example.t_008.storage.CurrencyDbModel;
+import com.example.t_008.storage.Storage;
 import com.example.t_008.utils.Utils;
 
 import java.io.BufferedReader;
@@ -28,7 +28,7 @@ public class InteractorCurrency {
 
     public InteractorCurrency(InteractorCurrencyListener interactorCurrencyListener, IContext iContext) {
         this.interactorCurrencyListener = interactorCurrencyListener;
-        storage = new Storage(iContext);
+        storage = new Storage(iContext); // не буду проверять iContext instanceof Context
         this.iContext = iContext;
     }
 
@@ -65,7 +65,7 @@ public class InteractorCurrency {
         });
     }
 
-    public void restStop() {
+    public void requestStop() {
         if (myCustomThread != null) {
             myCustomThread.unsubscribe();
         }
@@ -73,8 +73,7 @@ public class InteractorCurrency {
 
     private List<CurrencyDbModel> doRequest() throws Exception {
 
-        if (iContext instanceof Context &&
-                ((App) iContext.getContext().getApplicationContext()).isDataLoaded()) {
+        if (((App) iContext.getContext().getApplicationContext()).isDataLoaded()) {
             return storage.readData();
         }
 

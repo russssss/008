@@ -2,9 +2,9 @@ package com.example.t_008.utils;
 
 import android.util.Log;
 
-import com.example.t_008.feature_app.CurrencyListModel;
-import com.example.t_008.feature_app.CurrencyModel;
-import com.example.t_008.feature_storage.CurrencyDbModel;
+import com.example.t_008.app.CurrencyListModel;
+import com.example.t_008.app.CurrencyModel;
+import com.example.t_008.storage.CurrencyDbModel;
 
 import org.simpleframework.xml.core.Persister;
 

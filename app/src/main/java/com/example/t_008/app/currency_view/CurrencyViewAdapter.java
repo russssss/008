@@ -1,4 +1,4 @@
-package com.example.t_008.feature_app.currency_view;
+package com.example.t_008.app.currency_view;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
