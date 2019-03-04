@@ -21,13 +21,13 @@ public class Utils {
             CurrencyListModel pet = serializer.read(CurrencyListModel.class, reader, false);
             List<CurrencyDbModel> currencyDbModelList = new ArrayList<>();
 
-            for (CurrencyModel currencyModel : pet.currencyModelList) {
+            for (CurrencyModel currencyModel : pet.getCurrencyModelList()) {
                 currencyDbModelList.add(new CurrencyDbModel.Builder()
-                        .numCode(currencyModel.numCode)
-                        .charCode(currencyModel.charCode)
-                        .nominal(currencyModel.nominal)
-                        .name(currencyModel.name)
-                        .value(currencyModel.value)
+                        .numCode(currencyModel.getNumCode())
+                        .charCode(currencyModel.getCharCode())
+                        .nominal(currencyModel.getNominal())
+                        .name(currencyModel.getName())
+                        .value(currencyModel.getValue())
                         .build());
             }
 

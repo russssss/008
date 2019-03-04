@@ -66,8 +66,8 @@ public class InteractorCurrencyTest {
         assertNotNull(iContext);
         assertEquals(iContext.getContext(), mActivityRule.getActivity().getContext());
         assertNotNull(interactorCurrency);
-        interactorCurrency.requestStop();
-        interactorCurrency.requestData();
+
+        interactorCurrency.requestData(); interactorCurrency.requestStop();
         assertNotNull(iContext);
     }
 }

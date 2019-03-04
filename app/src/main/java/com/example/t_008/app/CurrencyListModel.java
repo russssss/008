@@ -8,5 +8,9 @@ import java.util.List;
 @Root(name = "ValCurs")
 public class CurrencyListModel {
     @ElementList(inline = true)
-    public List<CurrencyModel> currencyModelList;
+    private List<CurrencyModel> currencyModelList;
+
+    public List<CurrencyModel> getCurrencyModelList() {
+        return currencyModelList;
+    }
 }

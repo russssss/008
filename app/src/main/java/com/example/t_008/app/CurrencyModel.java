@@ -7,13 +7,33 @@ import org.simpleframework.xml.Root;
 @Root(name = "Valute")
 public class CurrencyModel {
     @Element(name = "NumCode")
-    public int numCode;
+    private int numCode;
     @Element(name = "CharCode")
-    public String charCode;
+    private String charCode;
     @Element(name = "Nominal")
-    public int nominal;
+    private int nominal;
     @Element(name = "Name")
-    public String name;
+    private String name;
     @Element(name = "Value")
-    public String value;
+    private String value;
+
+    public int getNumCode() {
+        return numCode;
+    }
+
+    public String getCharCode() {
+        return charCode;
+    }
+
+    public int getNominal() {
+        return nominal;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

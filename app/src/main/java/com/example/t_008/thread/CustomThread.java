@@ -4,38 +4,40 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomThread<T extends CustomObserver> {
 
     private Handler handler;
     private Object o;
-    private volatile T observable;
+    private volatile List<T> observableList = new ArrayList<>();
 
     public void subscribe(T observableT) {
-        this.observable = observableT;
-
-        handler = new Handler(Looper.getMainLooper());
-
+        this.observableList.add(observableT);
         Thread thread = new Thread() {
             @Override
             public void run() {
                 Looper.prepare();
-                o = observable.doOnThread();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (observable != null) {
-                            observable.callOnSuccess(o);
-                        }
+                if (observableList != null) {
+                    for (final T observable : observableList) {
+                        o = observable.doOnThread();
+                        handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                observable.callOnSuccess(o);
+                            }
+                        });
                     }
-                });
+                }
                 Looper.loop();
             }
         };
-
         thread.start();
     }
 
     public void unsubscribe() {
-            observable = null;
+        observableList = null;
     }
 }

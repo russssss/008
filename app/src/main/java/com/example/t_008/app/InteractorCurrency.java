@@ -10,9 +10,11 @@ import com.example.t_008.storage.Storage;
 import com.example.t_008.utils.Utils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +57,7 @@ public class InteractorCurrency {
 
             @Override
             public List<CurrencyDbModel> doOnThread() {
-                try {
-                    return doRequest();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return doRequest();
             }
         });
     }
@@ -71,37 +68,56 @@ public class InteractorCurrency {
         }
     }
 
-    private List<CurrencyDbModel> doRequest() throws Exception {
+    private List<CurrencyDbModel> doRequest() {
 
         if (((App) iContext.getContext().getApplicationContext()).isDataLoaded()) {
             return storage.readData();
         }
 
-        List<CurrencyDbModel> list;
-        URL githubEndpoint = new URL("https://www.cbr.ru/scripts/XML_daily.asp");
-        HttpsURLConnection myConnection = (HttpsURLConnection) githubEndpoint.openConnection();
+        List<CurrencyDbModel> list = null;
+
+        URL githubEndpoint = null;
+
+        try {
+            githubEndpoint = new URL("https://www.cbr.ru/scripts/XML_daily.asp");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        HttpsURLConnection myConnection = null;
+
+        try {
+            myConnection = (HttpsURLConnection) githubEndpoint.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         myConnection.setRequestProperty("User-Agent", "bank");
 
-        if (myConnection.getResponseCode() == 200) {
+        try {
+            if (myConnection.getResponseCode() == 200) {
 
-            myConnection.connect();
-            InputStreamReader in = new InputStreamReader((InputStream) myConnection.getContent());
-            BufferedReader buff = new BufferedReader(in);
-            String line;
-            final StringBuilder stringBuilder = new StringBuilder();
+                myConnection.connect();
+                InputStreamReader in = new InputStreamReader((InputStream) myConnection.getContent());
+                BufferedReader buff = new BufferedReader(in);
+                String line;
+                final StringBuilder stringBuilder = new StringBuilder();
 
-            do {
-                line = buff.readLine();
-                stringBuilder.append(line + "\n");
-            } while (line != null);
+                do {
+                    line = buff.readLine();
+                    stringBuilder.append(line + "\n");
+                } while (line != null);
 
-            list = Utils.deserilize(stringBuilder.toString());
+                list = Utils.deserilize(stringBuilder.toString());
 
-            ((App) iContext.getContext().getApplicationContext()).setDataLoaded(true);
+                ((App) iContext.getContext().getApplicationContext()).setDataLoaded(true);
 
-            storage.saveData(list);
-        } else {
-            list = storage.readData();
+                storage.saveData(list);
+            } else {
+                list = storage.readData();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return list;
