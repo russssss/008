@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyViewListe
 
     @Override
     protected void onStop() {
-        super.onStop();
         presenterCurrency.stop();
+        super.onStop();
     }
 
     @Override
