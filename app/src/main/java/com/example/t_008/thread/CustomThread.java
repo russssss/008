@@ -8,7 +8,7 @@ public class CustomThread<T extends CustomObserver> {
 
     private Handler handler;
     private Object o;
-    private T observable;
+    private volatile T observable;
 
     public void subscribe(T observableT) {
         this.observable = observableT;
